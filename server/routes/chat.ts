@@ -117,9 +117,22 @@ export const handleChat: RequestHandler = async (req, res) => {
 
     const aiResponse = data.choices[0].message.content;
 
-    res.json({ 
-      message: aiResponse,
-      model: "tngtech/deepseek-r1t2-chimera:free"
+    // Check for potentially truncated responses
+    const isTruncated = aiResponse.endsWith('...') ||
+                       aiResponse.match(/```\w*\s*$/) || // Code block without closing
+                       aiResponse.match(/<[^>]*$/) || // Incomplete HTML tag
+                       !aiResponse.trim().endsWith('.') && !aiResponse.trim().endsWith('!') && !aiResponse.trim().endsWith('?') && !aiResponse.trim().endsWith('```');
+
+    let finalResponse = aiResponse;
+
+    if (isTruncated) {
+      finalResponse += "\n\n⚠️ **Note**: The response may have been truncated. If you need the complete code or information, please ask me to continue or provide the full example.";
+    }
+
+    res.json({
+      message: finalResponse,
+      model: "tngtech/deepseek-r1t2-chimera:free",
+      truncated: isTruncated
     });
 
   } catch (error) {
