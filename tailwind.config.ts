@@ -57,6 +57,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        cyber: {
+          50: "hsl(var(--cyber-50))",
+          100: "hsl(var(--cyber-100))",
+          200: "hsl(var(--cyber-200))",
+          300: "hsl(var(--cyber-300))",
+          400: "hsl(var(--cyber-400))",
+          500: "hsl(var(--cyber-500))",
+          600: "hsl(var(--cyber-600))",
+          700: "hsl(var(--cyber-700))",
+          800: "hsl(var(--cyber-800))",
+          900: "hsl(var(--cyber-900))",
+        },
+        matrix: {
+          DEFAULT: "hsl(var(--matrix))",
+          dark: "hsl(var(--matrix-dark))",
+        },
+        terminal: {
+          DEFAULT: "hsl(var(--terminal))",
+          dark: "hsl(var(--terminal-dark))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
