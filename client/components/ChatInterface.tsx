@@ -209,15 +209,20 @@ export function ChatInterface() {
                 </div>
 
                 {/* Example Queries */}
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-foreground mb-3">Try asking:</h3>
-                  <div className="grid gap-2">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                    <Terminal className="w-5 h-5 text-primary" />
+                    Try asking:
+                  </h3>
+                  <div className="grid gap-3">
                     {exampleQueries.map((query, index) => (
                       <button
                         key={index}
                         onClick={() => handleExampleQuery(query)}
-                        className="text-left p-3 rounded-lg border border-border hover:bg-card/50 transition-colors text-muted-foreground hover:text-foreground"
+                        className="text-left p-4 rounded-xl border border-border hover:bg-card/60 hover-glow transition-all text-muted-foreground hover:text-foreground group scan-line font-mono text-sm"
+                        style={{ animationDelay: `${index * 0.05}s` }}
                       >
+                        <span className="text-primary group-hover:text-accent transition-colors">$ </span>
                         {query}
                       </button>
                     ))}
