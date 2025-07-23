@@ -188,12 +188,22 @@ export function ChatInterface() {
                 </div>
 
                 {/* Security Features Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {securityFeatures.map((feature, index) => (
-                    <Card key={index} className="p-4 bg-card/50 border-border hover:bg-card/80 transition-colors">
-                      <div className="text-primary mb-3">{feature.icon}</div>
-                      <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                      <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <Card
+                      key={index}
+                      className="p-6 bg-card/60 border-border hover:bg-card/80 hover-glow scan-line group cursor-pointer"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <div className="text-primary mb-4 group-hover:scale-110 transition-transform">
+                        {feature.icon}
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-3 text-lg">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {feature.description}
+                      </p>
                     </Card>
                   ))}
                 </div>
