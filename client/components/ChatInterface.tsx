@@ -123,6 +123,11 @@ export function ChatInterface() {
 
       const data: ChatResponse = await response.json();
 
+      // Validate response structure
+      if (!data || typeof data.message !== 'string') {
+        throw new Error('Invalid response format from server');
+      }
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: data.message,
