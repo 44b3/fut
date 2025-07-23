@@ -230,46 +230,57 @@ export function ChatInterface() {
                 </div>
               </div>
             ) : (
-              <div className="max-w-4xl mx-auto space-y-6">
-                {messages.map((message) => (
+              <div className="max-w-4xl mx-auto space-y-8">
+                {messages.map((message, index) => (
                   <div
                     key={message.id}
-                    className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex gap-4 message-enter ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     {message.type === 'ai' && (
-                      <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-5 h-5 text-primary-foreground" />
+                      <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0 neon-glow">
+                        <Shield className="w-6 h-6 text-primary" />
                       </div>
                     )}
                     <div
-                      className={`max-w-3xl p-4 rounded-lg ${
+                      className={`max-w-3xl p-6 rounded-xl shadow-lg ${
                         message.type === 'user'
-                          ? 'bg-primary text-primary-foreground ml-12'
-                          : 'bg-card border border-border'
+                          ? 'bg-primary/90 text-primary-foreground ml-12 hover-glow'
+                          : 'bg-card/80 border border-border backdrop-blur-sm'
                       }`}
                     >
-                      <p className="whitespace-pre-wrap">{message.content}</p>
-                      <div className="text-xs opacity-70 mt-2">
+                      {message.type === 'ai' ? (
+                        <MessageContent content={message.content} />
+                      ) : (
+                        <p className="whitespace-pre-wrap font-mono">{message.content}</p>
+                      )}
+                      <div className="text-xs opacity-70 mt-4 font-mono">
                         {message.timestamp.toLocaleTimeString()}
+                        {message.type === 'ai' && (
+                          <span className="ml-2 text-primary">• Deepseek R1T2</span>
+                        )}
                       </div>
                     </div>
                     {message.type === 'user' && (
-                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Terminal className="w-5 h-5 text-accent-foreground" />
+                      <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0 matrix-glow">
+                        <Terminal className="w-6 h-6 text-accent" />
                       </div>
                     )}
                   </div>
                 ))}
                 {isLoading && (
-                  <div className="flex gap-3">
-                    <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-5 h-5 text-primary-foreground" />
+                  <div className="flex gap-4 message-enter">
+                    <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0 neon-glow">
+                      <Shield className="w-6 h-6 text-primary" />
                     </div>
-                    <div className="max-w-3xl p-4 rounded-lg bg-card border border-border">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100"></div>
-                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-200"></div>
+                    <div className="max-w-3xl p-6 rounded-xl bg-card/80 border border-border backdrop-blur-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 bg-primary rounded-full animate-bounce typing-indicator"></div>
+                          <div className="w-3 h-3 bg-primary rounded-full animate-bounce typing-indicator" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-3 h-3 bg-primary rounded-full animate-bounce typing-indicator" style={{ animationDelay: '0.2s' }}></div>
+                        </div>
+                        <span className="text-sm text-muted-foreground font-mono">AI is thinking...</span>
                       </div>
                     </div>
                   </div>
