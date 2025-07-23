@@ -140,22 +140,25 @@ export function ChatInterface() {
   return (
     <div className="flex flex-col h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-card/50 backdrop-blur-sm">
+      <div className="border-b border-border bg-card/80 backdrop-blur-sm cyber-grid">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-primary-foreground" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center neon-glow">
+                <Shield className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">CyberAI</h1>
-                <p className="text-sm text-muted-foreground">Red Team Security Assistant</p>
+                <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                  CyberAI
+                  <Activity className="w-5 h-5 text-primary animate-pulse" />
+                </h1>
+                <p className="text-sm text-muted-foreground">Red Team Security Assistant • Deepseek R1T2 Chimera</p>
               </div>
             </div>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="flex items-center gap-1 text-sm text-cyber-500">
-                <div className="w-2 h-2 bg-cyber-500 rounded-full animate-pulse"></div>
-                Active
+            <div className="ml-auto flex items-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-primary">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse matrix-glow"></div>
+                <span className="font-mono">ONLINE</span>
               </div>
             </div>
           </div>
