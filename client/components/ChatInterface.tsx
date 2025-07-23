@@ -76,17 +76,53 @@ export function ChatInterface() {
     setInput('');
     setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      // Convert messages to API format
+      const apiMessages: APIChatMessage[] = messages
+        .concat(userMessage)
+        .map(msg => ({
+          role: msg.type === 'user' ? 'user' : 'assistant',
+          content: msg.content
+        }));
+
+      const chatRequest: ChatRequest = {
+        messages: apiMessages
+      };
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(chatRequest),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data: ChatResponse = await response.json();
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "I'm your cybersecurity AI assistant specialized in red team operations and security testing. I can help you with penetration testing, vulnerability assessment, security automation, and threat analysis. What specific security challenge can I assist you with today?",
+        content: data.message,
         type: 'ai',
         timestamp: new Date()
       };
+
       setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: "I apologize, but I'm experiencing technical difficulties. Please try again in a moment. If the issue persists, check your connection or contact support.",
+        type: 'ai',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
