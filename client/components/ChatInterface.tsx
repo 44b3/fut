@@ -138,9 +138,22 @@ export function ChatInterface() {
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
+
+      let errorContent = "I apologize, but I'm experiencing technical difficulties. Please try again in a moment.";
+
+      if (error instanceof Error) {
+        if (error.message.includes('JSON')) {
+          errorContent = "There was an issue parsing the server response. Please try again.";
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          errorContent = "Network connection issue. Please check your connection and try again.";
+        } else if (error.message.includes('500')) {
+          errorContent = "Server is experiencing issues. Please try again in a moment.";
+        }
+      }
+
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "I apologize, but I'm experiencing technical difficulties. Please try again in a moment. If the issue persists, check your connection or contact support.",
+        content: errorContent,
         type: 'ai',
         timestamp: new Date()
       };
