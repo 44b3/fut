@@ -291,28 +291,44 @@ export function ChatInterface() {
           </div>
 
           {/* Input Area */}
-          <div className="border-t border-border bg-card/50 backdrop-blur-sm p-4">
+          <div className="border-t border-border bg-card/80 backdrop-blur-sm p-6 cyber-grid">
             <div className="max-w-4xl mx-auto">
-              <div className="flex gap-3">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask about penetration testing, vulnerability assessment, or security research..."
-                  className="flex-1 bg-background border-border focus:border-primary"
-                  disabled={isLoading}
-                />
+              <div className="flex gap-4">
+                <div className="flex-1 relative">
+                  <Input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask about penetration testing, vulnerability assessment, or security research..."
+                    className="bg-background/50 border-border focus:border-primary text-lg py-6 px-4 rounded-xl font-mono hover-glow transition-all"
+                    disabled={isLoading}
+                  />
+                  {input && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary text-sm font-mono">
+                      {input.length}
+                    </div>
+                  )}
+                </div>
                 <Button
                   onClick={handleSend}
                   disabled={!input.trim() || isLoading}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-6 rounded-xl hover-glow transition-all font-semibold"
                 >
-                  <Send className="w-4 h-4" />
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Send className="w-5 h-5" />
+                  )}
                 </Button>
               </div>
-              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                <AlertTriangle className="w-3 h-3" />
-                For educational and authorized testing purposes only. Always follow responsible disclosure practices.
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <AlertTriangle className="w-4 h-4 text-destructive" />
+                  <span className="font-mono">For educational and authorized testing purposes only. Always follow responsible disclosure practices.</span>
+                </div>
+                <div className="text-xs text-muted-foreground font-mono">
+                  Press <kbd className="px-2 py-1 bg-card/50 rounded text-primary">Enter</kbd> to send
+                </div>
               </div>
             </div>
           </div>
