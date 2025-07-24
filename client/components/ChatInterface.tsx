@@ -378,14 +378,25 @@ export function ChatInterface() {
 
                 {/* Example Queries */}
                 <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                    <Terminal className="w-5 h-5 text-primary" />
-                    Try asking:
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                      <Terminal className="w-5 h-5 text-primary" />
+                      Try asking:
+                    </h3>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={refreshQueries}
+                      className="h-8 px-3 text-xs hover:bg-primary/10 hover:text-primary"
+                    >
+                      <RefreshCw className="w-3 h-3 mr-1" />
+                      Refresh
+                    </Button>
+                  </div>
                   <div className="grid gap-3">
                     {exampleQueries.map((query, index) => (
                       <button
-                        key={index}
+                        key={`${query}-${index}`}
                         onClick={() => handleExampleQuery(query)}
                         className="text-left p-4 rounded-xl border border-border hover:bg-card/60 hover-glow transition-all text-muted-foreground hover:text-foreground group scan-line font-mono text-sm"
                         style={{ animationDelay: `${index * 0.05}s` }}
