@@ -314,6 +314,15 @@ export function ChatInterface() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={() => setShowToolsPanel(!showToolsPanel)}
+                  className={`h-8 px-3 text-xs hover:bg-primary/10 hover:text-primary ${showToolsPanel ? 'bg-primary/10 text-primary' : ''}`}
+                >
+                  <Settings className="w-3 h-3 mr-1" />
+                  Tools
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={newSession}
                   className="h-8 px-3 text-xs hover:bg-primary/10 hover:text-primary"
                 >
