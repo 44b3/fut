@@ -200,13 +200,21 @@ export function CodeBlock({ code, language = 'text', filename }: CodeBlockProps)
             {/* Code Lines */}
             <div className="flex-1 py-4 px-4">
               <code className="font-mono text-sm text-foreground">
-                {highlightedLines.map((line, i) => (
-                  <div
-                    key={i}
-                    className="leading-relaxed hover:bg-primary/5 px-2 -mx-2 rounded transition-colors"
-                    dangerouslySetInnerHTML={{ __html: line || '&nbsp;' }}
-                  />
-                ))}
+                {lines.map((line, i) => {
+                  const highlightedLine = highlightedLines[i];
+                  return (
+                    <div
+                      key={i}
+                      className="leading-relaxed hover:bg-primary/5 px-2 -mx-2 rounded transition-colors"
+                    >
+                      {highlightedLine ? (
+                        <span dangerouslySetInnerHTML={{ __html: highlightedLine }} />
+                      ) : (
+                        <span>&nbsp;</span>
+                      )}
+                    </div>
+                  );
+                })}
               </code>
             </div>
           </div>
