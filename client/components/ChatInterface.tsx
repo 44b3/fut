@@ -42,12 +42,36 @@ const securityFeatures: SecurityFeature[] = [
   }
 ];
 
-const exampleQueries = [
+const allExampleQueries = [
   "Help me with SQL injection testing strategies",
   "Generate a custom payload for XSS testing",
   "Analyze this network configuration for vulnerabilities",
-  "Create a red team engagement plan"
+  "Create a red team engagement plan",
+  "Show me advanced Nmap scanning techniques",
+  "Generate a reverse shell payload for Windows",
+  "Help with privilege escalation on Linux systems",
+  "Create a phishing email template for testing",
+  "Explain CSRF attack vectors and prevention",
+  "Generate a buffer overflow exploit skeleton",
+  "Help with wireless network penetration testing",
+  "Show me directory traversal attack payloads",
+  "Create a password spraying attack strategy",
+  "Analyze web application authentication bypasses",
+  "Generate LDAP injection test cases",
+  "Help with Active Directory enumeration",
+  "Show me XML external entity (XXE) payloads",
+  "Create a comprehensive port scanning script",
+  "Help with Docker container security assessment",
+  "Generate subdomain enumeration commands"
 ];
+
+// Function to get randomized queries
+const getRandomQueries = (count: number = 4) => {
+  const shuffled = [...allExampleQueries].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
+
+const [exampleQueries, setExampleQueries] = useState<string[]>([]);
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
