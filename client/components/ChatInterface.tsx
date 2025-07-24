@@ -79,6 +79,7 @@ export function ChatInterface() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentSessionId, setCurrentSessionId] = useState<string>('');
+  const [showToolsPanel, setShowToolsPanel] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize randomized queries and load chat history
