@@ -452,7 +452,7 @@ export function ChatInterface() {
                       <div className="text-xs opacity-70 mt-4 font-mono">
                         {message.timestamp.toLocaleTimeString()}
                         {message.type === 'ai' && (
-                          <span className="ml-2 text-primary">• Deepseek R1T2</span>
+                          <span className="ml-2 text-primary">��� Deepseek R1T2</span>
                         )}
                       </div>
                     </div>
