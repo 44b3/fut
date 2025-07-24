@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { Send, Shield, Terminal, Zap, Lock, Eye, AlertTriangle, CheckCircle, Activity, RefreshCw, History, Save, Download, Trash2 } from 'lucide-react';
+import { Send, Shield, Terminal, Zap, Lock, Eye, AlertTriangle, CheckCircle, Activity, RefreshCw, History, Save, Download, Trash2, Settings } from 'lucide-react';
 import { ChatMessage as APIChatMessage, ChatRequest, ChatResponse } from '@shared/api';
 import { MessageContent } from './CodeBlock';
+import { ToolsPanel } from './ToolsPanel';
 
 interface Message {
   id: string;
