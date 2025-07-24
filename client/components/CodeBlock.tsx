@@ -215,37 +215,38 @@ export function CodeBlock({ code, language = 'text', filename }: CodeBlockProps)
 export function MessageContent({ content }: { content: string }) {
   // Split content by code blocks (```language\ncode\n```)
   const parts = content.split(/(```[\s\S]*?```)/g);
-  
+
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {parts.map((part, index) => {
         if (part.startsWith('```')) {
           // Extract language and code
           const lines = part.slice(3, -3).split('\n');
           const language = lines[0].trim();
           const code = lines.slice(1).join('\n').trim();
-          
+
           return (
-            <CodeBlock 
-              key={index} 
-              code={code} 
+            <CodeBlock
+              key={index}
+              code={code}
               language={language || 'text'}
             />
           );
         } else if (part.includes('`') && !part.startsWith('```')) {
-          // Handle inline code
+          // Handle inline code with enhanced styling
           const inlineCodeRegex = /`([^`]+)`/g;
           const segments = part.split(inlineCodeRegex);
-          
+
           return (
-            <div key={index} className="whitespace-pre-wrap">
-              {segments.map((segment, segIndex) => 
+            <div key={index} className="whitespace-pre-wrap leading-relaxed">
+              {segments.map((segment, segIndex) =>
                 segIndex % 2 === 1 ? (
-                  <code 
+                  <code
                     key={segIndex}
-                    className="bg-card/50 border border-border px-2 py-1 rounded text-sm font-mono text-primary mx-1"
+                    className="relative inline-flex items-center bg-card/60 border border-primary/20 px-2 py-0.5 rounded-md text-sm font-mono text-primary mx-0.5 hover:bg-card/80 transition-colors"
                   >
-                    {segment}
+                    <span className="relative z-10">{segment}</span>
+                    <div className="absolute inset-0 bg-primary/5 rounded-md"></div>
                   </code>
                 ) : (
                   <span key={segIndex}>{segment}</span>
@@ -253,13 +254,26 @@ export function MessageContent({ content }: { content: string }) {
               )}
             </div>
           );
-        } else {
-          // Regular text
+        } else if (part.trim()) {
+          // Regular text with better formatting
+          // Handle bold text **text**
+          let formattedText = part.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>');
+          // Handle italic text *text*
+          formattedText = formattedText.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em class="italic text-foreground/90">$1</em>');
+          // Handle lists
+          formattedText = formattedText.replace(/^[-•]\s+(.+)$/gm, '<div class="flex items-start gap-2 my-1"><span class="text-primary mt-1">•</span><span>$1</span></div>');
+          // Handle numbered lists
+          formattedText = formattedText.replace(/^\d+\.\s+(.+)$/gm, '<div class="flex items-start gap-2 my-1"><span class="text-primary font-mono text-sm mt-0.5">$&</span></div>');
+
           return (
-            <div key={index} className="whitespace-pre-wrap">
-              {part}
-            </div>
+            <div
+              key={index}
+              className="whitespace-pre-wrap leading-relaxed text-foreground/95"
+              dangerouslySetInnerHTML={{ __html: formattedText }}
+            />
           );
+        } else {
+          return null;
         }
       })}
     </div>
