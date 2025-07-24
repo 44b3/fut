@@ -73,8 +73,8 @@ export function MatrixRain() {
       }
     }
 
-    // Start animation
-    const interval = setInterval(draw, 50); // 20 FPS for smooth effect
+    // Start animation - slower for subtle background effect
+    const interval = setInterval(draw, 80); // 12.5 FPS for subtle effect
 
     return () => {
       clearInterval(interval);
