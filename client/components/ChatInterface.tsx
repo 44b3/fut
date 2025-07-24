@@ -167,6 +167,11 @@ export function ChatInterface() {
     setExampleQueries(getRandomQueries());
   };
 
+  const handleCommandGenerated = (command: string) => {
+    setInput(command);
+    setShowToolsPanel(false);
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
