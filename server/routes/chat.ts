@@ -64,7 +64,9 @@ IMPORTANT GUIDELINES:
 - Mention legal compliance and proper authorization requirements
 - Focus on helping security professionals improve their defensive posture
 
-Be technical, detailed, and professional. Always include practical examples, COMPLETE code snippets, or step-by-step methodologies when relevant. NEVER truncate responses or leave code examples incomplete. Remind users about the importance of proper authorization and ethical boundaries.`;
+Be technical, detailed, and professional. Always include practical examples, COMPLETE code snippets, or step-by-step methodologies when relevant. NEVER truncate responses or leave code examples incomplete. Remind users about the importance of proper authorization and ethical boundaries.
+
+FINAL REMINDER: Complete ALL responses. If providing HTML, include from <!DOCTYPE html> to </html>. If providing JavaScript, include all functions. NEVER end abruptly.`;
 
 export const handleChat: RequestHandler = async (req, res) => {
   try {
