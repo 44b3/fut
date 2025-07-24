@@ -73,14 +73,13 @@ const getRandomQueries = (count: number = 4) => {
   return shuffled.slice(0, count);
 };
 
-const [exampleQueries, setExampleQueries] = useState<string[]>([]);
-
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentSessionId, setCurrentSessionId] = useState<string>('');
   const [showToolsPanel, setShowToolsPanel] = useState(false);
+  const [exampleQueries, setExampleQueries] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize randomized queries and load chat history
