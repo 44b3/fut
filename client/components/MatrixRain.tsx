@@ -1,55 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
-// Educational cybersecurity messages in leet speak
-const educationalMessages = [
-  // Basic Security Concepts
-  'u53 57r0ng p455w0rd5',        // use strong passwords
-  'up d473 y0ur 5y573m',         // update your system
-  '3n4bl3 2f4 4u7h',            // enable 2fa auth
-  'd0n7 cl1ck 5u5 l1nk5',       // don't click sus links
-  'k33p 50f7w4r3 up d473d',     // keep software updated
-  
-  // Penetration Testing Terms
-  'p0r7 5c4nn1ng 4c71v3',       // port scanning active
-  '5ql 1nj3c710n f0und',        // sql injection found
-  'x55 vulner4b1l17y',          // xss vulnerability
-  'pr1v353 35c4l4710n',         // privesc escalation
-  'r3v3r53 5h3ll 3574bl15h3d',  // reverse shell established
-  
-  // Security Tools
-  'nm4p 5c4n c0mpl373',         // nmap scan complete
-  'bUrp 5u173 pr0xy',           // burp suite proxy
-  'm374sp10l7 3xpl017',         // metasploit exploit
-  'w1r35h4rk c4p7ur3',          // wireshark capture
-  'j0hn 7h3 r1pp3r crck',       // john the ripper crack
-  
-  // Network Security
-  'f1r3w4ll byp455',            // firewall bypass
-  'n37w0rk 1n7ru510n',          // network intrusion
-  'p4ck37 5n1ff1ng',            // packet sniffing
-  'm17m 4774ck d373c73d',       // mitm attack detected
-  'dn5 p0150n1ng',              // dns poisoning
-  
-  // Web Security
-  'cr055 5173 5cr1p71ng',       // cross site scripting
-  'c5rf 4774ck v3c70r',         // csrf attack vector
-  'c0mm4nd 1nj3c710n',          // command injection
-  'f1l3 upl04d byp455',         // file upload bypass
-  'd1r3c70ry 7r4v3r54l',        // directory traversal
-  
-  // Crypto & Forensics
-  'h45h cr4ck1ng',              // hash cracking
-  'd474 3xf1l7r4710n',          // data exfiltration
-  'k3yl0gg3r d373c73d',         // keylogger detected
-  'r0077k17 1n574ll3d',         // rootkit installed
-  '5734g4n0gr4phy h1dd3n'       // steganography hidden
-];
-
+// Subtle matrix characters for unreadable background effect
 const matrixChars = [
-  '0', '1', 'A', 'B', 'C', 'D', 'E', 'F',
-  'ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ',
-  '!', '@', '#', '$', '%', '^', '&', '*',
-  '|', '\\', '/', '-', '+', '=', '~', '`'
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+  'ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ',
+  'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト',
+  '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+  '|', '\\', '/', '-', '+', '=', '~', '`', '[', ']'
 ];
 
 export function MatrixRain() {
