@@ -354,7 +354,13 @@ export function ChatInterface() {
         <div className="flex-1 flex flex-col">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 cyber-matrix relative">
-            {messages.length === 0 ? (
+            {/* Background overlay for enhanced depth */}
+            <div className="absolute inset-0 cyber-circuit opacity-50 pointer-events-none"></div>
+            <div className="absolute inset-0 cyber-hexagon opacity-30 pointer-events-none"></div>
+
+            {/* Content wrapper with backdrop */}
+            <div className="relative z-10">
+              {messages.length === 0 ? (
               <div className="max-w-4xl mx-auto">
                 {/* Welcome Section */}
                 <div className="text-center mb-8">
@@ -482,6 +488,7 @@ export function ChatInterface() {
               </div>
             )}
             <div ref={messagesEndRef} />
+            </div>
           </div>
 
           {/* Input Area */}
