@@ -41,67 +41,34 @@ export function MatrixRain() {
     }
 
     function draw() {
-      // Create trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+      // Create subtle trail effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#0f0'; // Matrix green
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        if (messageColumns[i] && currentMessages[i]) {
-          // Draw educational message
-          const message = currentMessages[i];
-          const charIndex = Math.floor(messageProgress[i]) % message.length;
-          const char = message[charIndex];
-          
-          // Bright white for message head
-          ctx.fillStyle = '#fff';
-          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-          
-          // Green for message tail
-          ctx.fillStyle = '#0f0';
-          for (let j = 1; j < 6; j++) {
-            const prevCharIndex = (Math.floor(messageProgress[i]) - j + message.length) % message.length;
-            const prevChar = message[prevCharIndex];
-            const alpha = 1 - (j * 0.15);
-            ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
-            ctx.fillText(prevChar, i * fontSize, (drops[i] - j) * fontSize);
-          }
-          
-          messageProgress[i] += 0.1;
-        } else {
-          // Draw random matrix characters
-          const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-          
-          // Bright character at head
-          ctx.fillStyle = '#fff';
-          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-          
-          // Fading trail
-          for (let j = 1; j < 8; j++) {
-            const alpha = 1 - (j * 0.12);
-            ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
-            const trailChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-            ctx.fillText(trailChar, i * fontSize, (drops[i] - j) * fontSize);
-          }
+        // Draw random matrix character
+        const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+
+        // Very subtle head character - dim white
+        ctx.fillStyle = `rgba(255, 255, 255, 0.15)`;
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+        // Very subtle green trail
+        for (let j = 1; j < 6; j++) {
+          const alpha = Math.max(0, 0.08 - (j * 0.015));
+          ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
+          const trailChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+          ctx.fillText(trailChar, i * fontSize, (drops[i] - j) * fontSize);
         }
 
-        // Move drop down
-        drops[i]++;
+        // Move drop down slowly
+        drops[i] += 0.8;
 
         // Reset drop when it goes off screen
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-          
-          // Maybe switch to/from message mode
-          if (Math.random() < 0.1) {
-            messageColumns[i] = !messageColumns[i];
-            if (messageColumns[i]) {
-              currentMessages[i] = educationalMessages[Math.floor(Math.random() * educationalMessages.length)];
-              messageProgress[i] = 0;
-            }
-          }
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+          drops[i] = Math.random() * -100; // Reset to random off-screen position
         }
       }
     }
