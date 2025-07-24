@@ -79,6 +79,11 @@ export function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Initialize randomized queries
+  useEffect(() => {
+    setExampleQueries(getRandomQueries());
+  }, []);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
