@@ -77,12 +77,93 @@ export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentSessionId, setCurrentSessionId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Initialize randomized queries
+  // Initialize randomized queries and load chat history
   useEffect(() => {
     setExampleQueries(getRandomQueries());
+    loadChatHistory();
   }, []);
+
+  // Auto-save chat history
+  useEffect(() => {
+    if (messages.length > 0 && currentSessionId) {
+      saveChatHistory();
+    }
+  }, [messages, currentSessionId]);
+
+  const loadChatHistory = () => {
+    try {
+      const saved = localStorage.getItem('cyberai-chat-history');
+      const sessionId = localStorage.getItem('cyberai-current-session');
+
+      if (saved && sessionId) {
+        const history = JSON.parse(saved);
+        if (history[sessionId]) {
+          setMessages(history[sessionId].messages || []);
+          setCurrentSessionId(sessionId);
+          return;
+        }
+      }
+
+      // Create new session
+      const newSessionId = `session-${Date.now()}`;
+      setCurrentSessionId(newSessionId);
+      localStorage.setItem('cyberai-current-session', newSessionId);
+    } catch (error) {
+      console.error('Error loading chat history:', error);
+      const newSessionId = `session-${Date.now()}`;
+      setCurrentSessionId(newSessionId);
+    }
+  };
+
+  const saveChatHistory = () => {
+    try {
+      const saved = localStorage.getItem('cyberai-chat-history');
+      const history = saved ? JSON.parse(saved) : {};
+
+      history[currentSessionId] = {
+        messages,
+        timestamp: new Date().toISOString(),
+        title: messages[0]?.content.slice(0, 50) || 'New Session'
+      };
+
+      localStorage.setItem('cyberai-chat-history', JSON.stringify(history));
+      localStorage.setItem('cyberai-current-session', currentSessionId);
+    } catch (error) {
+      console.error('Error saving chat history:', error);
+    }
+  };
+
+  const newSession = () => {
+    const newSessionId = `session-${Date.now()}`;
+    setCurrentSessionId(newSessionId);
+    setMessages([]);
+    setExampleQueries(getRandomQueries());
+    localStorage.setItem('cyberai-current-session', newSessionId);
+  };
+
+  const exportSession = () => {
+    const sessionData = {
+      sessionId: currentSessionId,
+      messages,
+      timestamp: new Date().toISOString(),
+      title: messages[0]?.content.slice(0, 50) || 'CyberAI Session'
+    };
+
+    const blob = new Blob([JSON.stringify(sessionData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cyberai-session-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const refreshQueries = () => {
+    setExampleQueries(getRandomQueries());
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
