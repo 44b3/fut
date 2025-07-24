@@ -303,6 +303,27 @@ export function ChatInterface() {
               </div>
             </div>
             <div className="ml-auto flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={newSession}
+                  className="h-8 px-3 text-xs hover:bg-primary/10 hover:text-primary"
+                >
+                  <Terminal className="w-3 h-3 mr-1" />
+                  New Session
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={exportSession}
+                  disabled={messages.length === 0}
+                  className="h-8 px-3 text-xs hover:bg-primary/10 hover:text-primary"
+                >
+                  <Download className="w-3 h-3 mr-1" />
+                  Export
+                </Button>
+              </div>
               <div className="flex items-center gap-2 text-sm text-primary">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse matrix-glow"></div>
                 <span className="font-mono">ONLINE</span>
