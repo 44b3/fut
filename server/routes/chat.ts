@@ -76,10 +76,21 @@ export const handleChat: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Invalid messages format" });
     }
 
+    // Check if this is a continuation request
+    const lastUserMessage = messages[messages.length - 1]?.content.toLowerCase() || '';
+    const isContinuationRequest = lastUserMessage.includes('continue') ||
+                                 lastUserMessage.includes('complete') ||
+                                 lastUserMessage.includes('full');
+
     // Add system prompt as the first message if not present
+    let systemPrompt = SYSTEM_PROMPT;
+    if (isContinuationRequest) {
+      systemPrompt += "\n\nIMPORTANT: The user is asking for a continuation or complete version. Provide the FULL, COMPLETE response without any truncation whatsoever.";
+    }
+
     const systemMessage: ChatMessage = {
       role: "system",
-      content: SYSTEM_PROMPT
+      content: systemPrompt
     };
 
     const apiMessages = [systemMessage, ...messages];
