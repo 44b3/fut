@@ -359,6 +359,11 @@ export function ChatInterface() {
             <div className="absolute inset-0 cyber-circuit opacity-50 pointer-events-none"></div>
             <div className="absolute inset-0 cyber-hexagon opacity-30 pointer-events-none"></div>
 
+            {/* Matrix rain effect */}
+            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
+              <MatrixRain />
+            </div>
+
             {/* Content wrapper with backdrop */}
             <div className="relative z-10">
               {messages.length === 0 ? (
