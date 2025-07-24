@@ -30,20 +30,14 @@ export function MatrixRain() {
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
 
-    // Matrix rain configuration
-    const fontSize = 14;
+    // Matrix rain configuration - smaller, more frequent for subtle effect
+    const fontSize = 12;
     const columns = Math.floor(canvas.width / fontSize);
     const drops: number[] = new Array(columns).fill(0);
-    const messageColumns: boolean[] = new Array(columns).fill(false);
-    const currentMessages: string[] = new Array(columns).fill('');
-    const messageProgress: number[] = new Array(columns).fill(0);
 
-    // Initialize some columns as message columns
+    // Initialize drops at random positions
     for (let i = 0; i < columns; i++) {
-      if (Math.random() < 0.08) { // 8% chance for message column
-        messageColumns[i] = true;
-        currentMessages[i] = educationalMessages[Math.floor(Math.random() * educationalMessages.length)];
-      }
+      drops[i] = Math.random() * -500; // Start some drops off-screen
     }
 
     function draw() {
