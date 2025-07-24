@@ -220,6 +220,36 @@
     animation: grid-shift 10s linear infinite;
   }
 
+  /* Enhanced cybersecurity background patterns */
+  .cyber-matrix {
+    background-image:
+      radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.03) 0%, transparent 30%),
+      radial-gradient(circle at 80% 80%, hsl(var(--primary) / 0.03) 0%, transparent 30%),
+      radial-gradient(circle at 40% 40%, hsl(var(--primary) / 0.02) 0%, transparent 50%),
+      linear-gradient(hsl(var(--border) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.05) 1px, transparent 1px);
+    background-size: 300px 300px, 300px 300px, 200px 200px, 30px 30px, 30px 30px;
+    animation: matrix-float 20s ease-in-out infinite;
+  }
+
+  .cyber-circuit {
+    background-image:
+      linear-gradient(45deg, transparent 35%, hsl(var(--primary) / 0.02) 35%, hsl(var(--primary) / 0.02) 65%, transparent 65%),
+      linear-gradient(-45deg, transparent 35%, hsl(var(--primary) / 0.02) 35%, hsl(var(--primary) / 0.02) 65%, transparent 65%);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    animation: circuit-pulse 15s linear infinite;
+  }
+
+  .cyber-hexagon {
+    background-image:
+      radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.02) 2px, transparent 2px),
+      linear-gradient(30deg, transparent 24%, hsl(var(--border) / 0.03) 25%, hsl(var(--border) / 0.03) 26%, transparent 27%, transparent 74%, hsl(var(--border) / 0.03) 75%, hsl(var(--border) / 0.03) 76%, transparent 77%),
+      linear-gradient(-30deg, transparent 24%, hsl(var(--border) / 0.03) 25%, hsl(var(--border) / 0.03) 26%, transparent 27%, transparent 74%, hsl(var(--border) / 0.03) 75%, hsl(var(--border) / 0.03) 76%, transparent 77%);
+    background-size: 20px 20px, 40px 70px, 40px 70px;
+    animation: hexagon-drift 25s linear infinite;
+  }
+
   /* Keyframe animations */
   @keyframes blink {
     0%, 50% { opacity: 1; }
