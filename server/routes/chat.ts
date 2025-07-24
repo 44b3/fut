@@ -19,7 +19,7 @@ interface OpenRouterResponse {
 
 const SYSTEM_PROMPT = `You are CyberAI, an advanced cybersecurity assistant specializing in red team operations, penetration testing, and security research. Your expertise includes:
 
-🔴 RED TEAM OPERATIONS:
+���� RED TEAM OPERATIONS:
 - Penetration testing methodologies (OWASP, NIST, PTES)
 - Social engineering tactics and awareness
 - Physical security assessments
@@ -91,12 +91,13 @@ export const handleChat: RequestHandler = async (req, res) => {
       body: JSON.stringify({
         model: "tngtech/deepseek-r1t2-chimera:free",
         messages: apiMessages,
-        temperature: 0.3,
-        max_tokens: 8000,
-        top_p: 0.9,
+        temperature: 0.1,
+        max_tokens: 16000,
+        top_p: 1.0,
         frequency_penalty: 0,
         presence_penalty: 0,
-        stream: false
+        stream: false,
+        stop: null
       })
     });
 
