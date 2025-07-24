@@ -34,7 +34,7 @@ export function CodeBlock({ code, language = 'text', filename }: CodeBlockProps)
         .replace(/(&lt;!DOCTYPE[^&]*&gt;)/g, '<span class="text-purple-300 font-semibold">$1</span>')
         .replace(/(&lt;\/?)([a-zA-Z0-9-]+)([^&]*?)(&gt;)/g,
           '<span class="text-blue-300">$1</span><span class="text-cyan-300 font-semibold">$2</span><span class="text-green-300">$3</span><span class="text-blue-300">$4</span>')
-        .replace(/([\w-]+)=("[^"]*"|'[^']*')/g,
+        .replace(/([\w-]+)=(&quot;[^&]*?&quot;|&#x27;[^&]*?&#x27;)/g,
           '<span class="text-yellow-300">$1</span>=<span class="text-green-400">$2</span>')
         .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="text-gray-400 italic">$1</span>');
     }
