@@ -126,12 +126,19 @@ export const handleChat: RequestHandler = async (req, res) => {
     const isTruncated = aiResponse.endsWith('...') ||
                        aiResponse.match(/```\w*\s*$/) || // Code block without closing
                        aiResponse.match(/<[^>]*$/) || // Incomplete HTML tag
-                       !aiResponse.trim().endsWith('.') && !aiResponse.trim().endsWith('!') && !aiResponse.trim().endsWith('?') && !aiResponse.trim().endsWith('```');
+                       aiResponse.match(/\w+['"][^>]*$/) || // Incomplete string/tag
+                       (!aiResponse.trim().endsWith('.') &&
+                        !aiResponse.trim().endsWith('!') &&
+                        !aiResponse.trim().endsWith('?') &&
+                        !aiResponse.trim().endsWith('```') &&
+                        !aiResponse.trim().endsWith('</html>') &&
+                        !aiResponse.trim().endsWith('</script>') &&
+                        !aiResponse.trim().endsWith('};'));
 
     let finalResponse = aiResponse;
 
     if (isTruncated) {
-      finalResponse += "\n\n⚠️ **Note**: The response may have been truncated. If you need the complete code or information, please ask me to continue or provide the full example.";
+      finalResponse += "\n\n⚠️ **Response Truncated**: The AI response was cut off. Type 'continue' or 'show me the complete code' to get the full response.";
     }
 
     res.json({
