@@ -306,7 +306,7 @@ export function ChatInterface() {
                   CyberAI
                   <Activity className="w-5 h-5 text-primary animate-pulse" />
                 </h1>
-                <p className="text-sm text-muted-foreground">Red Team Security Assistant • Deepseek R1T2 Chimera</p>
+                <p className="text-sm text-muted-foreground">Red Team Security Assistant ��� Deepseek R1T2 Chimera</p>
               </div>
             </div>
             <div className="ml-auto flex items-center gap-4">
@@ -369,7 +369,7 @@ export function ChatInterface() {
               {messages.length === 0 ? (
               <div className="max-w-4xl mx-auto">
                 {/* Welcome Section */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-8 backdrop-blur-sm bg-background/30 rounded-2xl p-8">
                   <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Shield className="w-8 h-8 text-primary" />
                   </div>
