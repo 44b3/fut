@@ -107,7 +107,7 @@ export const handleChat: RequestHandler = async (req, res) => {
         model: "tngtech/deepseek-r1t2-chimera:free",
         messages: apiMessages,
         temperature: 0.1,
-        max_tokens: 16000,
+        max_tokens: 100000,
         top_p: 1.0,
         frequency_penalty: 0,
         presence_penalty: 0,
