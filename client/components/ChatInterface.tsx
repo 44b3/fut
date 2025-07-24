@@ -6,6 +6,7 @@ import { Send, Shield, Terminal, Zap, Lock, Eye, AlertTriangle, CheckCircle, Act
 import { ChatMessage as APIChatMessage, ChatRequest, ChatResponse } from '@shared/api';
 import { MessageContent } from './CodeBlock';
 import { ToolsPanel } from './ToolsPanel';
+import { MatrixRain } from './MatrixRain';
 
 interface Message {
   id: string;
