@@ -17,9 +17,17 @@ export function CodeBlock({ code, language = 'text', filename }: CodeBlockProps)
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Escape HTML entities to prevent code execution
+  const escapeHtml = (text: string) => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  };
+
   // Advanced syntax highlighting with better colors and patterns
   const highlightCode = (code: string, lang: string) => {
-    let highlighted = code;
+    // First escape HTML entities to prevent execution
+    let highlighted = escapeHtml(code);
 
     if (lang === 'html') {
       highlighted = highlighted
