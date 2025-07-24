@@ -306,7 +306,7 @@ export function ChatInterface() {
                   CyberAI
                   <Activity className="w-5 h-5 text-primary animate-pulse" />
                 </h1>
-                <p className="text-sm text-muted-foreground">Red Team Security Assistant ��� Deepseek R1T2 Chimera</p>
+                <p className="text-sm text-muted-foreground">Red Team Security Assistant • Deepseek R1T2 Chimera</p>
               </div>
             </div>
             <div className="ml-auto flex items-center gap-4">
@@ -383,7 +383,7 @@ export function ChatInterface() {
                 </div>
 
                 {/* Security Features Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 backdrop-blur-sm bg-background/20 rounded-2xl p-6">
                   {securityFeatures.map((feature, index) => (
                     <Card
                       key={index}
