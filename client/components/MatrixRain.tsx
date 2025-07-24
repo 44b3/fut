@@ -1,54 +1,59 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-// Cybersecurity-themed character sets
-const cyberCharsets = {
-  binary: ['0', '1'],
-  hex: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
-  katakana: ['ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ', 'ラ', 'ワ', 'ガ', 'ザ', 'ダ', 'バ', 'パ'],
-  symbols: ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/'],
-  commands: ['ls', 'cd', 'rm', 'su', 'id', 'ps', 'nc', 'sh'],
-  protocols: ['TCP', 'UDP', 'SSH', 'FTP', 'SQL', 'XSS', 'XXE', 'RCE']
-};
-
-// Cybersecurity coded messages that randomly appear
-const codedMessages = [
-  'BREACH_DETECTED',
-  'INTRUSION_ALERT',
-  'FIREWALL_BYPASSED',
-  'ROOT_ACCESS_GRANTED',
-  'PAYLOAD_DEPLOYED',
-  'SHELL_ESTABLISHED',
-  'ENCRYPTION_BROKEN',
-  'BACKDOOR_ACTIVE',
-  'PRIVILEGE_ESCALATED',
-  'NETWORK_COMPROMISED',
-  'ZERO_DAY_EXPLOITED',
-  'SQL_INJECTION_SUCCESS',
-  'XSS_VECTOR_FOUND',
-  'BUFFER_OVERFLOW',
-  'REVERSE_SHELL_ACTIVE',
-  'CREDENTIALS_HARVESTED',
-  'LATERAL_MOVEMENT',
-  'PERSISTENCE_ESTABLISHED',
-  'DATA_EXFILTRATION',
-  'CLEANUP_INITIATED'
+// Educational cybersecurity messages in leet speak
+const educationalMessages = [
+  // Basic Security Concepts
+  'u53 57r0ng p455w0rd5',        // use strong passwords
+  'up d473 y0ur 5y573m',         // update your system
+  '3n4bl3 2f4 4u7h',            // enable 2fa auth
+  'd0n7 cl1ck 5u5 l1nk5',       // don't click sus links
+  'k33p 50f7w4r3 up d473d',     // keep software updated
+  
+  // Penetration Testing Terms
+  'p0r7 5c4nn1ng 4c71v3',       // port scanning active
+  '5ql 1nj3c710n f0und',        // sql injection found
+  'x55 vulner4b1l17y',          // xss vulnerability
+  'pr1v353 35c4l4710n',         // privesc escalation
+  'r3v3r53 5h3ll 3574bl15h3d',  // reverse shell established
+  
+  // Security Tools
+  'nm4p 5c4n c0mpl373',         // nmap scan complete
+  'bUrp 5u173 pr0xy',           // burp suite proxy
+  'm374sp10l7 3xpl017',         // metasploit exploit
+  'w1r35h4rk c4p7ur3',          // wireshark capture
+  'j0hn 7h3 r1pp3r crck',       // john the ripper crack
+  
+  // Network Security
+  'f1r3w4ll byp455',            // firewall bypass
+  'n37w0rk 1n7ru510n',          // network intrusion
+  'p4ck37 5n1ff1ng',            // packet sniffing
+  'm17m 4774ck d373c73d',       // mitm attack detected
+  'dn5 p0150n1ng',              // dns poisoning
+  
+  // Web Security
+  'cr055 5173 5cr1p71ng',       // cross site scripting
+  'c5rf 4774ck v3c70r',         // csrf attack vector
+  'c0mm4nd 1nj3c710n',          // command injection
+  'f1l3 upl04d byp455',         // file upload bypass
+  'd1r3c70ry 7r4v3r54l',        // directory traversal
+  
+  // Crypto & Forensics
+  'h45h cr4ck1ng',              // hash cracking
+  'd474 3xf1l7r4710n',          // data exfiltration
+  'k3yl0gg3r d373c73d',         // keylogger detected
+  'r0077k17 1n574ll3d',         // rootkit installed
+  '5734g4n0gr4phy h1dd3n'       // steganography hidden
 ];
 
-interface MatrixColumn {
-  x: number;
-  y: number;
-  speed: number;
-  chars: string[];
-  isMessage: boolean;
-  messageIndex: number;
-  charIndex: number;
-  opacity: number;
-  length: number;
-}
+const matrixChars = [
+  '0', '1', 'A', 'B', 'C', 'D', 'E', 'F',
+  'ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ',
+  '!', '@', '#', '$', '%', '^', '&', '*',
+  '|', '\\', '/', '-', '+', '=', '~', '`'
+];
 
 export function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [columns, setColumns] = useState<MatrixColumn[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -57,173 +62,112 @@ export function MatrixRain() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const resizeCanvas = () => {
-      const container = canvas.parentElement;
-      if (container) {
-        canvas.width = container.offsetWidth;
-        canvas.height = container.offsetHeight;
-      }
+    // Set canvas size
+    const setCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
     };
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    setCanvasSize();
+    window.addEventListener('resize', setCanvasSize);
 
-    // Initialize columns
-    const columnWidth = 20;
-    const numColumns = Math.floor(canvas.width / columnWidth);
-    const initialColumns: MatrixColumn[] = [];
+    // Matrix rain configuration
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops: number[] = new Array(columns).fill(0);
+    const messageColumns: boolean[] = new Array(columns).fill(false);
+    const currentMessages: string[] = new Array(columns).fill('');
+    const messageProgress: number[] = new Array(columns).fill(0);
 
-    for (let i = 0; i < numColumns; i++) {
-      const isMessage = Math.random() < 0.05; // 5% chance for coded message
-      initialColumns.push({
-        x: i * columnWidth,
-        y: Math.random() * canvas.height,
-        speed: Math.random() * 2 + 1,
-        chars: isMessage ? [] : getRandomChars(),
-        isMessage,
-        messageIndex: isMessage ? Math.floor(Math.random() * codedMessages.length) : 0,
-        charIndex: 0,
-        opacity: Math.random() * 0.8 + 0.2,
-        length: Math.random() * 20 + 10
-      });
+    // Initialize some columns as message columns
+    for (let i = 0; i < columns; i++) {
+      if (Math.random() < 0.08) { // 8% chance for message column
+        messageColumns[i] = true;
+        currentMessages[i] = educationalMessages[Math.floor(Math.random() * educationalMessages.length)];
+      }
     }
 
-    setColumns(initialColumns);
-
-    function getRandomChars(): string[] {
-      const charsetKeys = Object.keys(cyberCharsets) as (keyof typeof cyberCharsets)[];
-      const randomCharset = cyberCharsets[charsetKeys[Math.floor(Math.random() * charsetKeys.length)]];
-      return Array.from({ length: 20 }, () => 
-        randomCharset[Math.floor(Math.random() * randomCharset.length)]
-      );
-    }
-
-    function animate() {
-      if (!ctx || !canvas) return;
-
-      // Clear canvas with slight trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    function draw() {
+      // Create trail effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw columns
-      columns.forEach((column, index) => {
-        // Update position
-        column.y += column.speed;
+      ctx.fillStyle = '#0f0'; // Matrix green
+      ctx.font = `${fontSize}px monospace`;
 
-        // Reset column when it goes off screen
-        if (column.y > canvas.height + 100) {
-          column.y = -100;
-          column.x = index * columnWidth;
-          column.isMessage = Math.random() < 0.05; // 5% chance for new message
-          if (column.isMessage) {
-            column.messageIndex = Math.floor(Math.random() * codedMessages.length);
-            column.charIndex = 0;
-            column.chars = [];
-          } else {
-            column.chars = getRandomChars();
+      for (let i = 0; i < drops.length; i++) {
+        if (messageColumns[i] && currentMessages[i]) {
+          // Draw educational message
+          const message = currentMessages[i];
+          const charIndex = Math.floor(messageProgress[i]) % message.length;
+          const char = message[charIndex];
+          
+          // Bright white for message head
+          ctx.fillStyle = '#fff';
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          
+          // Green for message tail
+          ctx.fillStyle = '#0f0';
+          for (let j = 1; j < 6; j++) {
+            const prevCharIndex = (Math.floor(messageProgress[i]) - j + message.length) % message.length;
+            const prevChar = message[prevCharIndex];
+            const alpha = 1 - (j * 0.15);
+            ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
+            ctx.fillText(prevChar, i * fontSize, (drops[i] - j) * fontSize);
           }
-          column.opacity = Math.random() * 0.8 + 0.2;
-          column.length = Math.random() * 20 + 10;
-        }
-
-        // Draw column
-        if (column.isMessage) {
-          drawMessageColumn(ctx, column);
+          
+          messageProgress[i] += 0.1;
         } else {
-          drawCharColumn(ctx, column);
-        }
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    function drawMessageColumn(ctx: CanvasRenderingContext2D, column: MatrixColumn) {
-      const message = codedMessages[column.messageIndex];
-      const fontSize = 14;
-      
-      ctx.font = `${fontSize}px 'Courier New', monospace`;
-      ctx.textAlign = 'center';
-
-      for (let i = 0; i < column.length; i++) {
-        const y = column.y - i * fontSize;
-        if (y < -fontSize || y > canvas!.height + fontSize) continue;
-
-        const charOpacity = Math.max(0, column.opacity - (i * 0.05));
-        
-        if (i === 0) {
-          // Head character - bright white
-          ctx.fillStyle = `rgba(255, 255, 255, ${charOpacity})`;
-        } else if (i < 5) {
-          // Recent characters - bright green
-          ctx.fillStyle = `rgba(0, 255, 0, ${charOpacity})`;
-        } else {
-          // Tail characters - dim green
-          ctx.fillStyle = `rgba(0, 255, 0, ${charOpacity * 0.5})`;
+          // Draw random matrix characters
+          const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+          
+          // Bright character at head
+          ctx.fillStyle = '#fff';
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          
+          // Fading trail
+          for (let j = 1; j < 8; j++) {
+            const alpha = 1 - (j * 0.12);
+            ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
+            const trailChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            ctx.fillText(trailChar, i * fontSize, (drops[i] - j) * fontSize);
+          }
         }
 
-        // Display message characters sequentially
-        const charIndex = (column.charIndex + i) % message.length;
-        const char = message[charIndex];
-        
-        ctx.fillText(char, column.x + 10, y);
-      }
+        // Move drop down
+        drops[i]++;
 
-      // Advance message
-      column.charIndex = (column.charIndex + 0.1) % message.length;
-    }
-
-    function drawCharColumn(ctx: CanvasRenderingContext2D, column: MatrixColumn) {
-      const fontSize = 14;
-      
-      ctx.font = `${fontSize}px 'Courier New', monospace`;
-      ctx.textAlign = 'center';
-
-      for (let i = 0; i < column.length; i++) {
-        const y = column.y - i * fontSize;
-        if (y < -fontSize || y > canvas!.height + fontSize) continue;
-
-        const charOpacity = Math.max(0, column.opacity - (i * 0.05));
-        
-        if (i === 0) {
-          // Head character - bright white
-          ctx.fillStyle = `rgba(255, 255, 255, ${charOpacity})`;
-        } else if (i < 3) {
-          // Recent characters - bright green
-          ctx.fillStyle = `rgba(0, 255, 65, ${charOpacity})`;
-        } else {
-          // Tail characters - dim green
-          ctx.fillStyle = `rgba(0, 255, 65, ${charOpacity * 0.6})`;
-        }
-
-        // Random character from the column's charset
-        const char = column.chars[i % column.chars.length];
-        ctx.fillText(char, column.x + 10, y);
-
-        // Occasionally change characters for dynamic effect
-        if (Math.random() < 0.005) {
-          const charsetKeys = Object.keys(cyberCharsets) as (keyof typeof cyberCharsets)[];
-          const randomCharset = cyberCharsets[charsetKeys[Math.floor(Math.random() * charsetKeys.length)]];
-          column.chars[i] = randomCharset[Math.floor(Math.random() * randomCharset.length)];
+        // Reset drop when it goes off screen
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+          
+          // Maybe switch to/from message mode
+          if (Math.random() < 0.1) {
+            messageColumns[i] = !messageColumns[i];
+            if (messageColumns[i]) {
+              currentMessages[i] = educationalMessages[Math.floor(Math.random() * educationalMessages.length)];
+              messageProgress[i] = 0;
+            }
+          }
         }
       }
     }
 
-    animate();
+    // Start animation
+    const interval = setInterval(draw, 50); // 20 FPS for smooth effect
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      clearInterval(interval);
+      window.removeEventListener('resize', setCanvasSize);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        width: '100%',
-        height: '100%',
-        zIndex: 1
-      }}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 1 }}
     />
   );
 }
