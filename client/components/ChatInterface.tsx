@@ -7,6 +7,7 @@ import { ChatMessage as APIChatMessage, ChatRequest, ChatResponse } from '@share
 import { MessageContent } from './CodeBlock';
 import { ToolsPanel } from './ToolsPanel';
 import { MatrixRain } from './MatrixRain';
+import { SessionHistory } from './SessionHistory';
 
 interface Message {
   id: string;
