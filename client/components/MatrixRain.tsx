@@ -30,14 +30,14 @@ export function MatrixRain() {
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
 
-    // Matrix rain configuration - smaller, more frequent for subtle effect
-    const fontSize = 12;
-    const columns = Math.floor(canvas.width / fontSize);
+    // Matrix rain configuration - optimized for performance
+    const fontSize = 16; // Larger font for fewer columns
+    const columns = Math.min(Math.floor(canvas.width / fontSize), 60); // Limit max columns
     const drops: number[] = new Array(columns).fill(0);
 
     // Initialize drops at random positions
     for (let i = 0; i < columns; i++) {
-      drops[i] = Math.random() * -500; // Start some drops off-screen
+      drops[i] = Math.random() * -200; // Shorter off-screen distance
     }
 
     function draw() {
