@@ -409,7 +409,7 @@ export function ChatInterface() {
                 </div>
 
                 {/* Example Queries */}
-                <div className="space-y-4 backdrop-blur-sm bg-background/20 rounded-2xl p-6">
+                <div className="space-y-4 bg-background/15 rounded-2xl p-6">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
                       <Terminal className="w-5 h-5 text-primary" />
