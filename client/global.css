@@ -220,16 +220,14 @@
     animation: grid-shift 10s linear infinite;
   }
 
-  /* Enhanced cybersecurity background patterns */
+  /* Optimized cybersecurity background patterns */
   .cyber-matrix {
     background-image:
-      radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.03) 0%, transparent 30%),
-      radial-gradient(circle at 80% 80%, hsl(var(--primary) / 0.03) 0%, transparent 30%),
-      radial-gradient(circle at 40% 40%, hsl(var(--primary) / 0.02) 0%, transparent 50%),
-      linear-gradient(hsl(var(--border) / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.05) 1px, transparent 1px);
-    background-size: 300px 300px, 300px 300px, 200px 200px, 30px 30px, 30px 30px;
-    animation: matrix-float 20s ease-in-out infinite;
+      radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.02) 0%, transparent 40%),
+      linear-gradient(hsl(var(--border) / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.03) 1px, transparent 1px);
+    background-size: 400px 400px, 40px 40px, 40px 40px;
+    animation: matrix-float 30s ease-in-out infinite;
   }
 
   .cyber-circuit {
