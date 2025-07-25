@@ -374,7 +374,7 @@ export function ChatInterface() {
               {messages.length === 0 ? (
               <div className="max-w-4xl mx-auto">
                 {/* Welcome Section */}
-                <div className="text-center mb-8 backdrop-blur-sm bg-background/30 rounded-2xl p-8">
+                <div className="text-center mb-8 bg-background/20 rounded-2xl p-8">
                   <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Shield className="w-8 h-8 text-primary" />
                   </div>
