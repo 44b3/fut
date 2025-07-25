@@ -461,7 +461,7 @@ export function ChatInterface() {
                         <p className="whitespace-pre-wrap font-mono">{message.content}</p>
                       )}
                       <div className="text-xs opacity-70 mt-4 font-mono">
-                        {message.timestamp.toLocaleTimeString()}
+                        {new Date(message.timestamp).toLocaleTimeString()}
                         {message.type === 'ai' && (
                           <span className="ml-2 text-primary">• Deepseek R1T2</span>
                         )}
