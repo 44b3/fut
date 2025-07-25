@@ -103,7 +103,12 @@ export function ChatInterface() {
       if (saved && sessionId) {
         const history = JSON.parse(saved);
         if (history[sessionId]) {
-          setMessages(history[sessionId].messages || []);
+          // Restore messages with proper Date objects for timestamps
+          const restoredMessages = (history[sessionId].messages || []).map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp)
+          }));
+          setMessages(restoredMessages);
           setCurrentSessionId(sessionId);
           return;
         }
