@@ -441,7 +441,7 @@ export function ChatInterface() {
                 </div>
               </div>
             ) : (
-              <div className="max-w-4xl mx-auto space-y-8 backdrop-blur-sm bg-background/10 rounded-2xl p-6">
+              <div className="max-w-4xl mx-auto space-y-8 bg-background/8 rounded-2xl p-6">
                 {messages.map((message, index) => (
                   <div
                     key={message.id}
