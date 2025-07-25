@@ -179,6 +179,13 @@ export function ChatInterface() {
     setShowToolsPanel(false);
   };
 
+  const handleLoadSession = (sessionId: string, sessionMessages: Message[]) => {
+    setCurrentSessionId(sessionId);
+    setMessages(sessionMessages);
+    localStorage.setItem('cyberai-current-session', sessionId);
+    setShowHistory(false);
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
