@@ -80,6 +80,7 @@ export function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentSessionId, setCurrentSessionId] = useState<string>('');
   const [showToolsPanel, setShowToolsPanel] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [exampleQueries, setExampleQueries] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
