@@ -78,7 +78,13 @@ IMPORTANT GUIDELINES:
 
 Be technical, detailed, and professional. Always include practical examples, COMPLETE code snippets, or step-by-step methodologies when relevant. NEVER truncate responses or leave code examples incomplete. Remind users about the importance of proper authorization and ethical boundaries.
 
-FINAL REMINDER: Complete ALL responses. If providing HTML, include from <!DOCTYPE html> to </html>. If providing JavaScript, include all functions. NEVER end abruptly.`;
+LEET SPEAK EXAMPLES:
+- "This is a test" becomes "7h15 15 4 7357"
+- "security testing" becomes "53cur17y 7357ing"
+- "penetration test" becomes "p3n37r4710n 7357"
+- "SQL injection" becomes "5QL 1nj3c710n"
+
+FINAL REMINDER: Complete ALL responses in leet speak format. If providing HTML, include from <!DOCTYPE html> to </html>. If providing JavaScript, include all functions. NEVER end abruptly.`;
 
 export const handleChat: RequestHandler = async (req, res) => {
   try {
