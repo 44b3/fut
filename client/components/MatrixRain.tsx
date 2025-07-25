@@ -41,34 +41,46 @@ export function MatrixRain() {
     }
 
     function draw() {
-      // Create subtle trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+      // Create subtle trail effect - less frequent clearing for performance
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
 
-      for (let i = 0; i < drops.length; i++) {
-        // Draw random matrix character
-        const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+      // Process only every other column for performance
+      for (let i = 0; i < drops.length; i += Math.random() > 0.7 ? 2 : 1) {
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
 
-        // Very subtle head character - dim white
-        ctx.fillStyle = `rgba(255, 255, 255, 0.15)`;
-        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-
-        // Very subtle green trail
-        for (let j = 1; j < 6; j++) {
-          const alpha = Math.max(0, 0.08 - (j * 0.015));
-          ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
-          const trailChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-          ctx.fillText(trailChar, i * fontSize, (drops[i] - j) * fontSize);
+        // Skip if off-screen
+        if (y < -fontSize || y > canvas.height + fontSize) {
+          drops[i] += 1.2;
+          continue;
         }
 
-        // Move drop down slowly
-        drops[i] += 0.8;
+        // Draw random matrix character - single char only for performance
+        const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+
+        // Very subtle head character
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.fillText(char, x, y);
+
+        // Simplified trail - only 2 trail chars for performance
+        if (Math.random() > 0.6) { // Don't draw trail for every column
+          ctx.fillStyle = 'rgba(0, 255, 65, 0.06)';
+          const trailChar = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+          ctx.fillText(trailChar, x, y - fontSize);
+
+          ctx.fillStyle = 'rgba(0, 255, 65, 0.03)';
+          ctx.fillText(matrixChars[Math.floor(Math.random() * matrixChars.length)], x, y - fontSize * 2);
+        }
+
+        // Move drop down
+        drops[i] += 1.2;
 
         // Reset drop when it goes off screen
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
-          drops[i] = Math.random() * -100; // Reset to random off-screen position
+        if (drops[i] * fontSize > canvas.height + 50) {
+          drops[i] = Math.random() * -50;
         }
       }
     }
