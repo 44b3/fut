@@ -569,6 +569,14 @@ export function ChatInterface() {
           <ToolsPanel onCommandGenerated={handleCommandGenerated} />
         )}
       </div>
+
+      {/* Session History Modal */}
+      {showHistory && (
+        <SessionHistory
+          onClose={() => setShowHistory(false)}
+          onLoadSession={handleLoadSession}
+        />
+      )}
     </div>
   );
 }
