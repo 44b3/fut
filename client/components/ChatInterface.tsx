@@ -388,7 +388,7 @@ export function ChatInterface() {
                 </div>
 
                 {/* Security Features Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 backdrop-blur-sm bg-background/20 rounded-2xl p-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 bg-background/15 rounded-2xl p-6">
                   {securityFeatures.map((feature, index) => (
                     <Card
                       key={index}
