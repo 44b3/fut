@@ -317,6 +317,7 @@ export function ChatInterface() {
 
     } catch (error) {
       console.error('Error sending message:', error);
+      setIsStreaming(false);
 
       let errorContent = "I apologize, but I'm experiencing technical difficulties. Please try again in a moment.";
 
@@ -338,6 +339,7 @@ export function ChatInterface() {
       ));
     } finally {
       setIsLoading(false);
+      setIsStreaming(false);
     }
   };
 
