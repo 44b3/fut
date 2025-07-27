@@ -82,6 +82,7 @@ export function ChatInterface() {
   const [showToolsPanel, setShowToolsPanel] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [exampleQueries, setExampleQueries] = useState<string[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize randomized queries and load chat history
