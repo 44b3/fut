@@ -208,6 +208,17 @@ export function ChatInterface() {
     setInput('');
     setIsLoading(true);
 
+    // Create AI message for streaming
+    const aiMessageId = (Date.now() + 1).toString();
+    const aiMessage: Message = {
+      id: aiMessageId,
+      content: '',
+      type: 'ai',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, aiMessage]);
+
     try {
       // Convert messages to API format
       const apiMessages: APIChatMessage[] = messages
@@ -230,43 +241,75 @@ export function ChatInterface() {
       });
 
       if (!response.ok) {
-        let errorMessage = `HTTP error! status: ${response.status}`;
-        try {
-          const errorText = await response.text();
-          if (errorText.includes('<')) {
-            // Likely HTML error page
-            errorMessage = `Server error (${response.status}). Please try again.`;
-          } else {
-            const errorJson = JSON.parse(errorText);
-            errorMessage = errorJson.error || errorMessage;
-          }
-        } catch (parseError) {
-          console.error('Error parsing error response:', parseError);
-        }
-        throw new Error(errorMessage);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Check if response is actually JSON
+      // Check if it's a streaming response
       const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Server returned non-JSON response');
+      if (contentType && contentType.includes('text/event-stream')) {
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (reader) {
+          let streamedContent = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n').filter(line => line.trim() !== '');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+
+                try {
+                  const parsed = JSON.parse(data);
+
+                  if (parsed.content) {
+                    streamedContent += parsed.content;
+
+                    // Update the AI message in real-time
+                    setMessages(prev => prev.map(msg =>
+                      msg.id === aiMessageId
+                        ? { ...msg, content: streamedContent }
+                        : msg
+                    ));
+                  }
+
+                  if (parsed.done) {
+                    break;
+                  }
+
+                  if (parsed.error) {
+                    throw new Error(parsed.error);
+                  }
+                } catch (parseError) {
+                  // Skip malformed chunks
+                  continue;
+                }
+              }
+            }
+          }
+        }
+      } else {
+        // Fallback to non-streaming response
+        const data: ChatResponse = await response.json();
+
+        if (!data || typeof data.message !== 'string') {
+          throw new Error('Invalid response format from server');
+        }
+
+        setMessages(prev => prev.map(msg =>
+          msg.id === aiMessageId
+            ? { ...msg, content: data.message }
+            : msg
+        ));
       }
 
-      const data: ChatResponse = await response.json();
-
-      // Validate response structure
-      if (!data || typeof data.message !== 'string') {
-        throw new Error('Invalid response format from server');
-      }
-
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: data.message,
-        type: 'ai',
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
 
@@ -282,13 +325,12 @@ export function ChatInterface() {
         }
       }
 
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: errorContent,
-        type: 'ai',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      // Update the AI message with error
+      setMessages(prev => prev.map(msg =>
+        msg.id === aiMessageId
+          ? { ...msg, content: errorContent }
+          : msg
+      ));
     } finally {
       setIsLoading(false);
     }
