@@ -379,13 +379,8 @@ export function ChatInterface() {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 cyber-matrix relative">
             {/* Background overlay for enhanced depth */}
-            <div className="absolute inset-0 cyber-circuit pointer-events-none" style={{ zIndex: 1 }}></div>
-            <div className="absolute inset-0 cyber-hexagon pointer-events-none" style={{ zIndex: 2 }}></div>
-
-            {/* Matrix rain effect */}
-            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3 }}>
-              <MatrixRain />
-            </div>
+            <div className="absolute inset-0 cyber-circuit pointer-events-none"></div>
+            <div className="absolute inset-0 cyber-hexagon pointer-events-none"></div>
 
             {/* Content wrapper with backdrop */}
             <div className="relative" style={{ zIndex: 10 }}>
