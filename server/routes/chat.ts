@@ -119,12 +119,21 @@ export const handleChat: RequestHandler = async (req, res) => {
 
     const apiMessages = [systemMessage, ...messages];
 
+    // Set up streaming response
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Cache-Control'
+    });
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": "Bearer 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",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://cyberai.app", 
+        "HTTP-Referer": "https://cyberai.app",
         "X-Title": "CyberAI"
       },
       body: JSON.stringify({
@@ -135,7 +144,7 @@ export const handleChat: RequestHandler = async (req, res) => {
         top_p: 1.0,
         frequency_penalty: 0,
         presence_penalty: 0,
-        stream: false,
+        stream: true,
         stop: null
       })
     });
@@ -143,50 +152,67 @@ export const handleChat: RequestHandler = async (req, res) => {
     if (!response.ok) {
       const errorData = await response.text();
       console.error("OpenRouter API error:", errorData);
-      return res.status(response.status).json({ 
-        error: "Failed to get AI response",
-        details: errorData
-      });
+      res.write(`data: ${JSON.stringify({ error: "Failed to get AI response", details: errorData })}\n\n`);
+      res.end();
+      return;
     }
 
-    const data = await response.json() as OpenRouterResponse;
-    
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      return res.status(500).json({ error: "Invalid AI response format" });
+    if (!response.body) {
+      res.write(`data: ${JSON.stringify({ error: "No response body" })}\n\n`);
+      res.end();
+      return;
     }
 
-    const aiResponse = data.choices[0].message.content;
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
 
-    // Check for potentially truncated responses
-    const isTruncated = aiResponse.endsWith('...') ||
-                       aiResponse.match(/```\w*\s*$/) || // Code block without closing
-                       aiResponse.match(/<[^>]*$/) || // Incomplete HTML tag
-                       aiResponse.match(/\w+['"][^>]*$/) || // Incomplete string/tag
-                       (!aiResponse.trim().endsWith('.') &&
-                        !aiResponse.trim().endsWith('!') &&
-                        !aiResponse.trim().endsWith('?') &&
-                        !aiResponse.trim().endsWith('```') &&
-                        !aiResponse.trim().endsWith('</html>') &&
-                        !aiResponse.trim().endsWith('</script>') &&
-                        !aiResponse.trim().endsWith('};'));
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
 
-    let finalResponse = aiResponse;
+        if (done) {
+          res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+          break;
+        }
 
-    if (isTruncated) {
-      finalResponse += "\n\n⚠️ **Response Truncated**: The AI response was cut off. Type 'continue' or 'show me the complete code' to get the full response.";
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n').filter(line => line.trim() !== '');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+
+            if (data === '[DONE]') {
+              res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+              continue;
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
+                const content = parsed.choices[0].delta.content;
+                res.write(`data: ${JSON.stringify({ content })}\n\n`);
+              }
+            } catch (parseError) {
+              // Skip malformed chunks
+              continue;
+            }
+          }
+        }
+      }
+    } catch (streamError) {
+      console.error("Streaming error:", streamError);
+      res.write(`data: ${JSON.stringify({ error: "Streaming error" })}\n\n`);
+    } finally {
+      res.end();
     }
-
-    res.json({
-      message: finalResponse,
-      model: "tngtech/deepseek-r1t2-chimera:free",
-      truncated: isTruncated
-    });
 
   } catch (error) {
     console.error("Chat API error:", error);
-    res.status(500).json({ 
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
       error: "Internal server error",
       details: error instanceof Error ? error.message : "Unknown error"
-    });
+    }));
   }
 };
