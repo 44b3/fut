@@ -388,7 +388,7 @@ export function ChatInterface() {
             </div>
 
             {/* Content wrapper with backdrop */}
-            <div className="relative z-20">
+            <div className="relative" style={{ zIndex: 10 }}>
               {messages.length === 0 ? (
               <div className="max-w-4xl mx-auto">
                 {/* Welcome Section */}
