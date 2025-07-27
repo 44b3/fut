@@ -521,7 +521,15 @@ export function ChatInterface() {
                       }`}
                     >
                       {message.type === 'ai' ? (
-                        <MessageContent content={message.content} />
+                        <div>
+                          <MessageContent content={message.content} />
+                          {isStreaming && message.id === messages[messages.length - 1]?.id && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                              <span className="text-xs text-primary font-mono">7yp1ng 1n 1337 5p34k...</span>
+                            </div>
+                          )}
+                        </div>
                       ) : (
                         <p className="whitespace-pre-wrap font-mono">{message.content}</p>
                       )}
