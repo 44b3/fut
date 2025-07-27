@@ -249,6 +249,7 @@ export function ChatInterface() {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('text/event-stream')) {
         // Handle streaming response
+        setIsStreaming(true);
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
 
@@ -282,10 +283,12 @@ export function ChatInterface() {
                   }
 
                   if (parsed.done) {
+                    setIsStreaming(false);
                     break;
                   }
 
                   if (parsed.error) {
+                    setIsStreaming(false);
                     throw new Error(parsed.error);
                   }
                 } catch (parseError) {
@@ -296,6 +299,7 @@ export function ChatInterface() {
             }
           }
         }
+        setIsStreaming(false);
       } else {
         // Fallback to non-streaming response
         const data: ChatResponse = await response.json();
