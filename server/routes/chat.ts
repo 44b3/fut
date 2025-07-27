@@ -101,58 +101,67 @@ export const handleChat: RequestHandler = async (req, res) => {
     }
 
     // Check if this is a continuation request
-    const lastUserMessage = messages[messages.length - 1]?.content.toLowerCase() || '';
-    const isContinuationRequest = lastUserMessage.includes('continue') ||
-                                 lastUserMessage.includes('complete') ||
-                                 lastUserMessage.includes('full');
+    const lastUserMessage =
+      messages[messages.length - 1]?.content.toLowerCase() || "";
+    const isContinuationRequest =
+      lastUserMessage.includes("continue") ||
+      lastUserMessage.includes("complete") ||
+      lastUserMessage.includes("full");
 
     // Add system prompt as the first message if not present
     let systemPrompt = SYSTEM_PROMPT;
     if (isContinuationRequest) {
-      systemPrompt += "\n\nIMPORTANT: The user is asking for a continuation or complete version. Provide the FULL, COMPLETE response without any truncation whatsoever.";
+      systemPrompt +=
+        "\n\nIMPORTANT: The user is asking for a continuation or complete version. Provide the FULL, COMPLETE response without any truncation whatsoever.";
     }
 
     const systemMessage: ChatMessage = {
       role: "system",
-      content: systemPrompt
+      content: systemPrompt,
     };
 
     const apiMessages = [systemMessage, ...messages];
 
     // Set up streaming response
     res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Cache-Control'
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Cache-Control",
     });
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer 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",
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://cyberai.app",
-        "X-Title": "CyberAI"
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer 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",
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://cyberai.app",
+          "X-Title": "CyberAI",
+        },
+        body: JSON.stringify({
+          model: "tngtech/deepseek-r1t2-chimera:free",
+          messages: apiMessages,
+          temperature: 0.1,
+          max_tokens: 100000,
+          top_p: 1.0,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          stream: true,
+          stop: null,
+        }),
       },
-      body: JSON.stringify({
-        model: "tngtech/deepseek-r1t2-chimera:free",
-        messages: apiMessages,
-        temperature: 0.1,
-        max_tokens: 100000,
-        top_p: 1.0,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        stream: true,
-        stop: null
-      })
-    });
+    );
 
     if (!response.ok) {
       const errorData = await response.text();
       console.error("OpenRouter API error:", errorData);
-      res.write(`data: ${JSON.stringify({ error: "Failed to get AI response", details: errorData })}\n\n`);
+      res.write(
+        `data: ${JSON.stringify({ error: "Failed to get AI response", details: errorData })}\n\n`,
+      );
       res.end();
       return;
     }
@@ -176,20 +185,25 @@ export const handleChat: RequestHandler = async (req, res) => {
         }
 
         const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(line => line.trim() !== '');
+        const lines = chunk.split("\n").filter((line) => line.trim() !== "");
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
+          if (line.startsWith("data: ")) {
             const data = line.slice(6);
 
-            if (data === '[DONE]') {
+            if (data === "[DONE]") {
               res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
               continue;
             }
 
             try {
               const parsed = JSON.parse(data);
-              if (parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content) {
+              if (
+                parsed.choices &&
+                parsed.choices[0] &&
+                parsed.choices[0].delta &&
+                parsed.choices[0].delta.content
+              ) {
                 const content = parsed.choices[0].delta.content;
                 res.write(`data: ${JSON.stringify({ content })}\n\n`);
               }
@@ -206,13 +220,14 @@ export const handleChat: RequestHandler = async (req, res) => {
     } finally {
       res.end();
     }
-
   } catch (error) {
     console.error("Chat API error:", error);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      error: "Internal server error",
-      details: error instanceof Error ? error.message : "Unknown error"
-    }));
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      }),
+    );
   }
 };
