@@ -220,28 +220,33 @@
     animation: grid-shift 10s linear infinite;
   }
 
-  /* Optimized cybersecurity background patterns */
+  /* Enhanced cybersecurity background patterns */
   .cyber-matrix {
     background-image:
-      radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.02) 0%, transparent 40%),
-      linear-gradient(hsl(var(--border) / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.03) 1px, transparent 1px);
-    background-size: 400px 400px, 40px 40px, 40px 40px;
-    animation: matrix-float 30s ease-in-out infinite;
+      radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, hsl(var(--primary) / 0.04) 0%, transparent 60%),
+      linear-gradient(hsl(var(--border) / 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.08) 1px, transparent 1px);
+    background-size: 300px 300px, 400px 400px, 50px 50px, 50px 50px;
+    animation: matrix-float 25s ease-in-out infinite;
   }
 
   .cyber-circuit {
     background-image:
-      linear-gradient(45deg, transparent 40%, hsl(var(--primary) / 0.015) 40%, hsl(var(--primary) / 0.015) 60%, transparent 60%);
-    background-size: 80px 80px;
-    animation: circuit-pulse 20s linear infinite;
+      linear-gradient(45deg, transparent 35%, hsl(var(--primary) / 0.05) 35%, hsl(var(--primary) / 0.05) 65%, transparent 65%),
+      linear-gradient(-45deg, transparent 35%, hsl(var(--primary) / 0.03) 35%, hsl(var(--primary) / 0.03) 65%, transparent 65%);
+    background-size: 60px 60px, 80px 80px;
+    background-position: 0 0, 30px 30px;
+    animation: circuit-pulse 18s linear infinite;
   }
 
   .cyber-hexagon {
     background-image:
-      radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.015) 1px, transparent 1px);
-    background-size: 30px 30px;
-    animation: hexagon-drift 35s linear infinite;
+      radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.04) 2px, transparent 2px),
+      linear-gradient(60deg, transparent 30%, hsl(var(--border) / 0.06) 30%, hsl(var(--border) / 0.06) 70%, transparent 70%);
+    background-size: 25px 25px, 50px 50px;
+    background-position: 0 0, 25px 25px;
+    animation: hexagon-drift 30s linear infinite;
   }
 
   /* Keyframe animations */
